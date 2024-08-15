@@ -215,4 +215,113 @@ Example in airflow:
 - Each task in Airflow sends a heartbeat to the scheduler while it is running. This helps the scheduler monitor the status of tasks and detect any issues, such as tasks that hang or fail silently.
 
 
+#### Checksum
+
+A checksum is a simple error-detecting mechanism used to verify the integrity of data. In system design, particularly in machine learning (ML) system design, checksums play a crucial role in ensuring that data, models, and their outputs are accurate and consistent.
+
+Here are some popular frameworks and tools that include checksum mechanisms and are widely used for ensuring data integrity and consistency in machine learning pipelines:
+
+1. Apache Kafka (with Schema Registry)
+Use Case: Kafka is a distributed event streaming platform commonly used for real-time data pipelines. It supports checksums for verifying the integrity of data in streams.
+Feature: Kafka automatically computes and verifies checksums on each message in its topics to ensure data consistency during transmission. The Schema Registry further helps in validating the format of messages.
+
+2. DVC (Data Version Control)
+Use Case: DVC is a version control system specifically designed for managing data and machine learning models.
+Feature: DVC uses checksums to track and version data files and models, ensuring that any changes to data or models are easily detected and traced. This helps maintain the consistency and integrity of datasets and model artifacts.
+
+#### API Design
+
+FastAPI allows you to define routes for various HTTP methods, which are crucial in RESTful API design:
+- GET: Used to retrieve data from the server.
+- POST: Used to send data to the server to create a new resource.
+- PUT: Used to update an existing resource entirely.
+- DELETE: Used to delete a resource.
+
+These methods map to standard CRUD (Create, Read, Update, Delete) operations in web APIs. FastAPI makes it very straightforward to define these routes, validate inputs, and return responses, all while providing automatic documentation.
+
+
+#### WebSocket
+
+WebSockets are a communication protocol designed for real-time, bi-directional data transfer between clients (e.g., browsers) and servers. Unlike traditional HTTP requests where communication is initiated by the client, WebSockets allow both the client and server to send messages to each other anytime without needing to open a new connection. This makes WebSockets an excellent choice for use cases requiring real-time updates, such as chat applications, gaming, live streaming, and collaborative platforms. The main features of websocket :
+
+1. Connection Establishment:
+
+WebSocket communication begins with a handshake over HTTP/HTTPS. Once established, the connection is upgraded from HTTP to the WebSocket protocol (ws:// or wss:// for secure connections).
+2. Persistent Connection:
+
+Unlike HTTP, which opens and closes connections frequently, WebSockets maintain a persistent connection, reducing latency for ongoing communication.
+3. Low Latency:
+
+WebSockets provide lower latency for real-time applications because they eliminate the need for repeated requests and responses.
+
+4. Scalability:
+
+Implementing WebSockets in large-scale systems requires handling multiple open connections concurrently. Solutions often include load balancers and techniques like sharding, horizontal scaling, and using message brokers (e.g., Redis).
+
+5. Backpressure and Flow Control:
+
+In high-throughput scenarios, it’s important to manage the flow of messages and prevent flooding a connection. This involves designing the system to handle network congestion and buffering intelligently.
+
+System Design Considerations
+- Load Balancing and Scaling: Using WebSockets at scale requires distributing connections across multiple servers. This involves using load balancers that are WebSocket-aware.
+- Message Brokers: To handle high volumes of messages efficiently, message brokers like Redis are used to route messages between clients and servers.
+- Fault Tolerance and Reliability: Systems must be designed to handle connection drops and automatic reconnection without losing data.
+- Authentication: Secure WebSocket connections often integrate with existing authentication mechanisms (e.g., JWT tokens) to ensure only authorized clients connect.
+
+#### API Gateway
+
+An API gateway accepts API requests from a client, processes them based on defined policies, directs them to the appropriate services, and combines the responses for a simplified user experience. Typically, it handles a request by invoking multiple microservices and aggregating the results. It can also translate between protocols in legacy deployments.
+
+An API Gateway in Kubernetes is a component that manages and routes external traffic into the cluster, acting as a reverse proxy. It handles tasks like authentication, rate limiting, and routing requests to the appropriate microservices. Common API Gateway solutions in Kubernetes include NGINX.
+
+API gateways commonly implement capabilities that include:
+- Security policy – Authentication, authorization, access control, and encryption
+- Routing policy – Routing, rate limiting, request/response manipulation, circuit breaker, blue-green and canary deployments, A/B testing, load balancing, health checks, and custom error handling
+- Observability policy – Real-time and historical metrics, logging, and tracing
+
+For additional app- and API-level security, API gateways can be augmented with web application firewall (WAF) and denial of service (DoS) protection.
+
+Tools :
+- NGINX
+- Kurbenete API gateway(it's built-in in kubernet)
+
+Reference:
+
+https://www.f5.com/glossary/api-gateway
+
+
+#### Proxy server
+
+A proxy server is an intermediary server that sits between a client (like a user’s browser) and a backend service (like a machine learning model). In system design, a proxy server is used to control traffic, improve performance, provide additional security, and manage network communication more efficiently.
+
+**Proxy Server in Machine Learning System Design**
+In a machine learning system, proxy servers are often used to:
+
+1. Load Balancing: Distribute incoming requests across multiple instances of a model or service.
+2. Caching: Cache frequently requested predictions to reduce latency and computational costs.
+3. Authentication and Access Control: Enforce security rules before allowing access to the machine learning model.
+4. Rate Limiting: Control the number of requests made to the model, preventing overloading or abuse.
+5. A/B Testing: Direct a portion of traffic to different model versions for testing.
+
+**Use Case Example: Model Inference with Proxy Server**
+Imagine you have a machine learning system that performs real-time predictions for fraud detection. Here’s how a proxy server can be used:
+1. Request Handling and Routing:
+
+All prediction requests are first routed through a proxy server.
+The proxy server can distribute the requests across multiple model instances based on load, or direct requests to different model versions for A/B testing.
+2. Caching:
+
+If certain predictions are repeated often (like checking the same user’s transaction pattern), the proxy server can cache the response, reducing the need to recompute the result.
+
+3. Security and Rate Limiting:
+
+The proxy server can ensure that only authenticated users can access the prediction API and prevent a single user from flooding the system with requests.
+**Popular Frameworks for Proxy Servers in ML Systems**
+
+NGINX:
+
+A highly popular web server and reverse proxy. NGINX is commonly used for routing, load balancing, and caching.
+Supports advanced features like SSL termination, request filtering, and rate limiting.
+
+
 
