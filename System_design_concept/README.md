@@ -324,4 +324,65 @@ A highly popular web server and reverse proxy. NGINX is commonly used for routin
 Supports advanced features like SSL termination, request filtering, and rate limiting.
 
 
+#### Boom filter
+
+A Bloom filter is a probabilistic data structure used in system design that allows you to test whether an element is a member of a set. It is very space-efficient but has a trade-off: it may return false positives (indicating an element is in the set when it is not), but it will never return false negatives (indicating an element is not in the set when it actually is). This makes it useful when you want to quickly determine if an element is probably in a set, where occasional false positives are acceptable.
+
+**Use Case Example**
+Bloom filters are particularly useful when the data size is large, and memory is limited. Here are some real-world use cases:
+- Web Caching: To determine if a URL is in a cache. A Bloom filter can quickly check whether the URL is present in the cache without needing to go to the cache itself, reducing overhead.
+- Database Queries: Bloom filters can be used to reduce disk lookups in a database. For instance, when querying if an element exists in a distributed database, a Bloom filter can be used to quickly eliminate non-existent entries, avoiding unnecessary database hits.
+- Email Spam Detection: To check if an email sender is blacklisted. Instead of storing all email addresses, a Bloom filter can quickly verify if a sender’s address might be on a blacklist.
+
+**Popular Frameworks & Libraries for Bloom Filters**
+- Redis: Redis supports Bloom filters through the redisbloom module, which provides a fast and scalable solution for storing Bloom filters in a distributed system.
+- Python Bloom Filter (pybloom): For Python, libraries like pybloom and bloom-filter provide simple and efficient Bloom filter implementations.
+- Apache Kafka: Kafka Streams has built-in support for Bloom filters to filter streams of data effectively.
+
+#### REST and RPC
+- Use REST when you need a simple, widely accessible API for general-purpose or cross-platform integration, or when the focus is more on resources than actions.
+- Use RPC (gRPC, Thrift) when performance, low-latency communication, or internal service communication is critical, especially in real-time ML systems or complex microservice architectures.
+
+
+
+#### Idempotency
+
+Idempotency is a key concept in system design, especially in distributed systems, including machine learning (ML) systems. In essence, an operation is considered idempotent if it can be performed multiple times without changing the outcome beyond the initial application. In other words, regardless of how many times you repeat an idempotent operation, the result should be the same.
+
+
+In ML systems, idempotency is vital in various scenarios such as data processing, model serving, and orchestrating distributed training. Here are some specific areas where idempotency is important:
+
+1. Data Ingestion and Preprocessing Pipelines:
+
+ML systems often process large amounts of data from various sources. If a data preprocessing job or ETL (Extract, Transform, Load) process is retried due to failures, idempotency ensures that the data is not duplicated or corrupted.
+Example: A pipeline that processes incoming event logs (e.g., clickstream data) and stores them in a data warehouse. If the ingestion pipeline is retried, idempotent operations ensure that the same events aren’t processed and stored multiple times.
+
+2. Model Training Jobs:
+
+Distributed training systems may face interruptions or require retries. An idempotent training operation ensures that if a job is retried, it picks up where it left off or restarts in a way that produces the same outcome.
+Example: Training a model with checkpointing enabled. If a training job fails and is restarted, it can resume from the last checkpoint without redoing the previous steps.
+
+3. Model Serving APIs:
+
+When exposing models via APIs, idempotency is crucial for handling prediction requests. If a request is retried due to network issues, the API should produce the same prediction without causing unintended side effects.
+Example: A REST or RPC endpoint serving predictions for a fraud detection model. If the client retries the request due to a timeout, the same response should be returned to prevent double processing of a transaction.
+
+4. Batch Processing and Feature Engineering:
+
+Batch jobs for feature extraction or transformation need to be idempotent to avoid generating duplicate features or incorrect feature sets when jobs are retried.
+Example: A batch job that computes derived features like moving averages or aggregations. If the job runs twice, the same feature set should be generated without duplicating values or causing inconsistencies.
+
+
+**Popular Frameworks and Tools Supporting Idempotency**
+Many tools and frameworks facilitate building idempotent operations, especially in the context of ML systems:
+
+- Apache Airflow: Airflow is widely used for orchestrating ML pipelines. It supports idempotency by using task retries, backoff mechanisms, and ensuring that DAG (Directed Acyclic Graph) tasks are re-entrant and produce the same output if retried.
+
+- KubeFlow Pipelines: KubeFlow, designed for orchestrating ML workflows on Kubernetes, supports idempotent pipeline steps and retries. It allows you to implement idempotent steps in complex training, preprocessing, and deployment pipelines.
+
+
+
+
+
+
 
